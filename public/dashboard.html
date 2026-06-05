@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AAS LMS - Home</title>
+  <link rel="icon" href="/assets/brand/logo.png" type="image/png">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    body {
+      background-image: url('/assets/brand/background-graphic.png');
+      background-position: top right;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <img src="/assets/brand/logo.png" alt="Logo" class="header-logo">
+    <h3 class="header-title">Home</h3>
+    <button id="logoutBtn" class="btn btn-secondary" style="margin-left: auto;">Logout</button>
+  </header>
+
+  <div class="page-shell">
+    <main id="mainContent" class="card"></main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="/utils/firebase.js"></script>
+  <script src="/assets/dashboard.js"></script>
+</body>
+</html>
