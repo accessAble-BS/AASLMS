@@ -1,0 +1,64 @@
+# AAS LMS Module Import Template
+# Fill this in and upload on the course page to create modules and slides.
+# Repeat === MODULE === sections to import multiple modules at once.
+
+=== MODULE ===
+name: Example Module Title
+description: Short description of what this module covers.
+
+=== SLIDE ===
+layout: one
+
+[block:heading]
+text: Welcome to the module
+
+[block:text]
+subheading: What you will learn
+body: |
+  Write your introduction paragraph here.
+  Multiple lines are supported.
+
+[block:list]
+heading: Key points
+listType: bullet
+items:
+- First learning point
+- Second learning point
+- Third learning point
+
+=== SLIDE ===
+layout: two
+
+[block:text]
+column: 1
+subheading: Left column
+body: Text content for the left side.
+
+[block:callout]
+column: 2
+style: tip
+heading: Remember
+body: Important tip or note for learners.
+
+=== SLIDE ===
+layout: one
+
+[block:flip]
+front: What is the main safety rule?
+back: Always report hazards immediately.
+
+[block:video]
+embedUrl: https://www.youtube.com/watch?v=EXAMPLE
+caption: Optional video caption
+
+# --- BLOCK REFERENCE ---
+# layout: one | two
+# column: 1 | 2  (required for two-column slides, default 1)
+#
+# [block:heading]     text
+# [block:text]        subheading, body (use | for multiline)
+# [block:list]        heading, listType (bullet|numbered), items (- lines)
+# [block:flip]        front, back
+# [block:image]       url, caption, alt
+# [block:video]       embedUrl, caption
+# [block:callout]     style (tip|note|warning), heading, body

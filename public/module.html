@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS - Module Builder</title>
+  <link rel="icon" href="/assets/brand/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <style>
+    body {
+      background-image: url('/assets/brand/background-graphic.png');
+      background-position: top right;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <img src="/assets/brand/logo.png" alt="Logo" class="header-logo">
+    <div class="header-context">
+      <a id="backToCourseLink" href="/dashboard" class="header-back header-link">← Back to course</a>
+      <h3 id="moduleHeaderTitle" class="header-course-title">Loading...</h3>
+    </div>
+    <div class="header-actions">
+      <button type="button" id="logoutBtn" class="btn-icon" aria-label="Logout" title="Logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <path d="M16 17l5-5-5-5"></path>
+          <path d="M21 12H9"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="page-shell">
+    <div id="courseInfoContainer"></div>
+
+    <main class="card builder-layout">
+      <div class="catalogue-toolbar">
+        <h1>Content Builder</h1>
+        <button type="button" id="addSlideBtn" class="btn btn-primary">Add Slide</button>
+      </div>
+
+      <div class="builder-grid">
+        <aside class="builder-sidebar card">
+          <h2>Slides</h2>
+          <ul id="slideList" class="builder-slide-list" aria-live="polite"></ul>
+          <p id="emptySlides" class="empty-state hidden">No slides yet. Add your first slide to start building.</p>
+        </aside>
+
+        <section class="builder-preview card">
+          <div id="slidePreview" class="slide-preview-shell">
+            <p class="empty-state">Select or add a slide to preview it here.</p>
+          </div>
+          <div id="slideNav" class="slide-nav hidden">
+            <button type="button" id="prevSlideBtn" class="btn btn-secondary" aria-label="Previous slide">← Previous</button>
+            <span id="slideCounter" class="slide-counter">1 / 1</span>
+            <button type="button" id="nextSlideBtn" class="btn btn-secondary" aria-label="Next slide">Next →</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="layoutModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="layoutHeading">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog card">
+      <div class="modal-header">
+        <h2 id="layoutHeading">Choose slide layout</h2>
+        <button type="button" class="btn-icon" data-modal-close aria-label="Close" title="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="layoutGrid" class="layout-grid"></div>
+    </div>
+  </div>
+
+  <div id="slideEditorModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="slideEditorHeading">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog card modal-dialog-wide">
+      <div class="modal-header">
+        <h2 id="slideEditorHeading">Edit slide</h2>
+        <button type="button" class="btn-icon" data-modal-close aria-label="Close" title="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <p class="editor-hint">Stack content blocks in each column. Use one column for full-width slides, or two for side-by-side layouts.</p>
+      <div id="slideEditorColumns" class="slide-editor-columns"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Close</button>
+        <button type="button" id="saveSlideEditorBtn" class="btn btn-primary">Save Slide</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="componentTypeModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="componentTypeHeading">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog card modal-dialog-wide">
+      <div class="modal-header">
+        <h2 id="componentTypeHeading">Add content block</h2>
+        <button type="button" class="btn-icon" data-modal-close aria-label="Close" title="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="componentTypeGrid" class="slide-type-grid"></div>
+    </div>
+  </div>
+
+  <div id="blockFormModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="blockFormHeading">
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog card">
+      <div class="modal-header">
+        <h2 id="blockFormHeading">Add block</h2>
+        <button type="button" class="btn-icon" data-modal-close aria-label="Close" title="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <form id="blockForm" class="add-course-form">
+        <div id="blockFormFields"></div>
+        <div id="blockFormError" class="error-message" role="alert"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+          <button type="submit" id="submitBlockBtn" class="btn btn-primary">Save Block</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="/utils/firebase.js"></script>
+  <script src="/utils/courses.js"></script>
+  <script src="/utils/course-ui.js"></script>
+  <script src="/utils/slides.js"></script>
+  <script src="/utils/modal.js"></script>
+  <script src="/assets/module.js"></script>
+</body>
+</html>

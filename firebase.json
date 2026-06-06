@@ -10,6 +10,18 @@
       {
         "source": "/dashboard",
         "destination": "/dashboard.html"
+      },
+      {
+        "source": "/course",
+        "destination": "/course.html"
+      },
+      {
+        "source": "/module",
+        "destination": "/module.html"
+      },
+      {
+        "source": "/view",
+        "destination": "/view.html"
       }
     ]
   },
