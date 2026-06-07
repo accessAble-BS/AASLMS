@@ -1,0 +1,30 @@
+type MsSignInButtonProps = {
+  onClick: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+};
+
+function MicrosoftIcon() {
+  return (
+    <svg className="btn-ms-signin__icon" viewBox="0 0 21 21" aria-hidden="true">
+      <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+      <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+      <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+      <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+    </svg>
+  );
+}
+
+export function MsSignInButton({ onClick, disabled, loading }: MsSignInButtonProps) {
+  return (
+    <button
+      type="button"
+      className="btn btn-ms-signin"
+      onClick={onClick}
+      disabled={disabled || loading}
+    >
+      <MicrosoftIcon />
+      {loading ? 'Redirecting…' : 'Sign in with Microsoft'}
+    </button>
+  );
+}

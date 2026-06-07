@@ -1,0 +1,345 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: 400;
+  color: var(--black);
+  line-height: var(--line-height);
+  background: var(--white);
+}
+
+/* Teal background depth on admin pages (not login) */
+body.app-lms::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.app-lms #root {
+  position: relative;
+  z-index: 1;
+}
+
+body.viewer-body,
+body.viewer-body #root {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+body.viewer-body #root {
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--primary-100);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Typography */
+h1,
+.h1 {
+  margin: 0 0 1rem;
+  font-size: 18pt;
+  font-weight: 400;
+  color: var(--primary-100);
+  display: inline-block;
+  padding-bottom: 0.35rem;
+  border-bottom: var(--h1-border);
+  width: fit-content;
+  max-width: 100%;
+}
+
+h2,
+.h2 {
+  margin: 0 0 0.75rem;
+  font-size: 12pt;
+  font-weight: 400;
+  color: var(--primary-100);
+}
+
+h3,
+.h3 {
+  margin: 0;
+  font-size: 12pt;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--secondary-100);
+}
+
+p,
+.p {
+  margin: 0 0 1rem;
+  font-size: 12pt;
+  font-weight: 400;
+  color: var(--black);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 12pt;
+  font-weight: 400;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--primary-100);
+  color: var(--white);
+  border-color: var(--primary-100);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-80);
+  border-color: var(--primary-80);
+}
+
+.btn-secondary {
+  background: var(--secondary-20);
+  color: var(--secondary-100);
+  border-color: var(--secondary-100);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--secondary-20);
+  filter: brightness(0.97);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--white);
+  border-color: var(--color-danger);
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  color: var(--secondary-100);
+  border: none;
+  border-radius: var(--radius);
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: var(--secondary-20);
+}
+
+.btn-icon--danger {
+  color: var(--color-danger);
+}
+
+.btn-icon--danger:hover:not(:disabled) {
+  background: var(--color-danger-bg);
+}
+
+.btn-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.role-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--secondary-100);
+  border-radius: var(--radius);
+  background: var(--white);
+  cursor: pointer;
+  color: var(--secondary-100);
+}
+
+.role-toggle--on {
+  background: var(--primary-20);
+  border-color: var(--primary-100);
+  color: var(--primary-100);
+}
+
+.btn-sm,
+.btn-small {
+  padding: 6px 12px;
+  font-size: 11pt;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Microsoft sign-in (outlined, not pill) */
+.btn-ms-signin {
+  width: 100%;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid var(--secondary-100);
+  padding: 10px 16px;
+}
+
+.btn-ms-signin:hover:not(:disabled) {
+  background: var(--secondary-20);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-ms-signin__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border: 1px solid var(--secondary-20);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+/* Forms */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 12pt;
+  font-weight: 400;
+  color: var(--secondary-100);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--secondary-100);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--black);
+  font-size: 12pt;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--secondary-100);
+  opacity: 1;
+}
+
+.form-group textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  font-size: 12pt;
+}
+
+.alert-error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger-bg);
+}
+
+.alert-success {
+  background: var(--primary-20);
+  color: var(--primary-100);
+  border: 1px solid var(--primary-80);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--secondary-20);
+  font-size: 12pt;
+  color: var(--black);
+}
+
+th {
+  color: var(--secondary-100);
+  font-weight: 400;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius);
+  font-size: 10pt;
+  font-weight: 400;
+}
+
+.badge-published {
+  background: var(--primary-20);
+  color: var(--primary-100);
+}
+
+.badge-draft {
+  background: var(--secondary-20);
+  color: var(--secondary-100);
+}
+

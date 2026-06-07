@@ -1,0 +1,57 @@
+:root {
+  /* Accessable Scot palette (use these — do not hardcode hex elsewhere) */
+  --primary-100: #009ca6;
+  --primary-80: #33afb8;
+  --primary-20: #ccebed;
+  --secondary-100: #707372;
+  --secondary-80: #8d8f8e;
+  --secondary-20: #e2e3e3;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* Semantic aliases (maps to brief tokens) */
+  --color-primary: var(--primary-100);
+  --color-primary-dark: var(--primary-80);
+  --color-primary-20: var(--primary-20);
+  --color-primary-40: var(--primary-20);
+  --color-primary-60: var(--primary-80);
+  --color-primary-80: var(--primary-80);
+  --color-secondary: var(--secondary-100);
+  --color-secondary-20: var(--secondary-20);
+  --color-secondary-40: var(--secondary-20);
+  --color-secondary-60: var(--secondary-80);
+  --color-secondary-80: var(--secondary-80);
+  --color-white: var(--white);
+  --color-black: var(--black);
+  --color-surface: var(--white);
+  --color-text: var(--black);
+  --color-border: var(--secondary-100);
+
+  --color-danger: #c82333;
+  --color-danger-bg: #ffebee;
+  --color-success: var(--primary-100);
+  --modal-backdrop: rgba(0, 0, 0, 0.45);
+
+  --font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-size-base: 12pt;
+  --line-height: 1.5;
+
+  --radius: 4px;
+  --radius-login: 0;
+
+  --header-height: 80px;
+  --header-border: 2px solid var(--primary-100);
+  --h1-border: 2.25pt solid var(--primary-100);
+
+  --page-shell-max: 1200px;
+  --page-shell-padding: 24px;
+
+  --brand-logo-header: 60px;
+  --brand-logo-login: 80px;
+  --brand-background: url('/brand/background-graphic.png');
+
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --section-y: 2rem;
+  --container-max: 52rem;
+  --main-overlay-opacity: 0.2;
+}

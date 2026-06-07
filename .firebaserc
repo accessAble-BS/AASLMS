@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "aas-lms"
+    "default": "aas-admin-69ccf"
+  },
+  "targets": {
+    "aas-admin-69ccf": {
+      "hosting": {
+        "lms": [
+          "aas-internal-lms"
+        ]
+      }
+    }
   }
 }
