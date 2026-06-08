@@ -29,7 +29,13 @@
 
   --color-danger: #c82333;
   --color-danger-bg: #ffebee;
-  --color-success: var(--primary-100);
+  --color-danger-text: #c82333;
+  --color-warning: #e6a817;
+  --color-warning-bg: #fef3cd;
+  --color-warning-text: #856404;
+  --color-success: #2e7d32;
+  --color-success-bg: #e8f5e9;
+  --color-success-text: #2e7d32;
   --modal-backdrop: rgba(0, 0, 0, 0.45);
 
   --font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
