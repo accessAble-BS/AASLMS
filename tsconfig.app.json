@@ -21,7 +21,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@aas/shared-core": ["../AAS-SHARED-CORE/src/index.ts"],
-      "@aas/shared-core/*": ["../AAS-SHARED-CORE/src/*"]
+      "@aas/shared-core/*": ["../AAS-SHARED-CORE/src/*"],
+      "@aas/shared-ui": ["../AAS-SHARED-UI/src/index.ts"],
+      "@aas/shared-ui/*": ["../AAS-SHARED-UI/src/*"]
     }
   },
   "include": ["src"]

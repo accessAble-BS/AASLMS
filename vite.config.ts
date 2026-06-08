@@ -5,9 +5,11 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@aas/shared-core': path.resolve(__dirname, '../AAS-SHARED-CORE/src/index.ts'),
+      '@aas/shared-ui': path.resolve(__dirname, '../AAS-SHARED-UI/src/index.ts'),
     },
   },
 });
