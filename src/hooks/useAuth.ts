@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
+import {
+  clearInternalSignedOutMarker,
+  clearPkceFlowState,
+  redirectToSignedOutLanding,
+  signOutInternalAuth,
+  subscribeInternalSessionSync,
+} from '@aas/shared-core';
 import { supabase } from '@/lib/supabase';
 
 type AuthState = {
@@ -13,6 +20,10 @@ export function useAuth(): AuthState {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const unsubscribeSync = subscribeInternalSessionSync(supabase.auth, {
+      onSessionLost: redirectToSignedOutLanding,
+    });
+
     supabase.auth.getSession().then(({ data: { session: current } }) => {
       setSession(current);
       setLoading(false);
@@ -20,12 +31,18 @@ export function useAuth(): AuthState {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+      if (event === 'SIGNED_IN' && nextSession) {
+        clearInternalSignedOutMarker();
+      }
       setSession(nextSession);
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      unsubscribeSync();
+    };
   }, []);
 
   return {
@@ -40,6 +57,9 @@ function getAuthCallbackUrl(): string {
 }
 
 export async function signInWithMicrosoft(): Promise<void> {
+  clearPkceFlowState();
+  clearInternalSignedOutMarker();
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'azure',
     options: {
@@ -51,6 +71,5 @@ export async function signInWithMicrosoft(): Promise<void> {
 }
 
 export async function signOut(): Promise<void> {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  await signOutInternalAuth(supabase.auth);
 }

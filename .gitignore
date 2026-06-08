@@ -68,3 +68,22 @@ dist/
 
 # dataconnect generated files
 .dataconnect
+
+# --- commit-push-all.ps1 managed ignores ---
+# Local env
+.env*
+!.env.example
+
+# Firebase local cache
+.firebase/
+
+# Supabase local
+.supabase/
+
+# Node / build output
+node_modules/
+dist/
+build/
+
+# Logs
+*.log

@@ -1,4 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import {
+  cleanupLegacyAuthStorage,
+  createInternalSupabaseAuthOptions,
+} from '@aas/shared-core';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -9,13 +13,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+cleanupLegacyAuthStorage();
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    flowType: 'pkce',
-    detectSessionInUrl: false,
-    persistSession: true,
-    autoRefreshToken: true,
-    storage: window.localStorage,
-    storageKey: 'aas-lms-auth',
-  },
+  auth: createInternalSupabaseAuthOptions(),
 });

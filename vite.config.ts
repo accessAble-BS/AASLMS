@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@aas/shared-core': path.resolve(__dirname, '../AAS-SHARED-CORE/src/index.ts'),
     },
   },
 });

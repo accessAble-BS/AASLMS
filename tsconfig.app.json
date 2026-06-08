@@ -19,7 +19,9 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@aas/shared-core": ["../AAS-SHARED-CORE/src/index.ts"],
+      "@aas/shared-core/*": ["../AAS-SHARED-CORE/src/*"]
     }
   },
   "include": ["src"]
