@@ -6,6 +6,7 @@ import { BRAND_LOGO_URL } from '@/lib/brand';
 import { createCourse, fetchCourses, formatDate, truncateText } from '@/lib/courses';
 import type { Course } from '@/lib/types';
 import { prepareCourseImage } from '@/lib/images';
+import { fetchCourseProgress } from '@/lib/progress';
 import { useRoles } from '@/hooks/useRoles';
 
 export function CataloguePage() {
@@ -20,10 +21,19 @@ export function CataloguePage() {
   const [submitting, setSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  // Map of courseId -> set of completed module IDs (learner-only view)
+  const [progressMap, setProgressMap] = useState<Map<string, number>>(new Map());
 
   useEffect(() => {
     void loadCourses();
   }, []);
+
+  // Load progress once courses are fetched and we know the user is learner-only
+  useEffect(() => {
+    if (isLearnerOnly && courses.length > 0) {
+      void loadProgress(courses);
+    }
+  }, [isLearnerOnly, courses.length]);
 
   async function loadCourses() {
     setLoading(true);
@@ -36,6 +46,16 @@ export function CataloguePage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function loadProgress(courseList: Course[]) {
+    const entries = await Promise.all(
+      courseList.map(async (c) => {
+        const { completedModuleIds } = await fetchCourseProgress(c.id);
+        return [c.id, completedModuleIds.length] as [string, number];
+      }),
+    );
+    setProgressMap(new Map(entries));
   }
 
   const categories = useMemo(() => {
@@ -159,7 +179,12 @@ export function CataloguePage() {
               <h2>{category}</h2>
               <div className="course-gallery">
                 {grouped[category].map((course) => (
-                  <CourseCard key={course.id} course={course} canEdit={canEditLms} />
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    canEdit={canEditLms}
+                    completedModules={progressMap.get(course.id)}
+                  />
                 ))}
               </div>
             </section>
@@ -167,7 +192,12 @@ export function CataloguePage() {
       ) : (
         <div className="course-gallery">
           {filtered.map((course) => (
-            <CourseCard key={course.id} course={course} canEdit={canEditLms} />
+            <CourseCard
+              key={course.id}
+              course={course}
+              canEdit={canEditLms}
+              completedModules={progressMap.get(course.id)}
+            />
           ))}
         </div>
       )}
@@ -224,8 +254,18 @@ export function CataloguePage() {
   );
 }
 
-function CourseCard({ course, canEdit }: { course: Course; canEdit: boolean }) {
-  const modules = Array.isArray(course.modules) ? course.modules.length : 0;
+function CourseCard({
+  course,
+  canEdit,
+  completedModules,
+}: {
+  course: Course;
+  canEdit: boolean;
+  completedModules?: number;
+}) {
+  const totalModules = Array.isArray(course.modules) ? course.modules.length : 0;
+  const showProgress = completedModules !== undefined && totalModules > 0;
+  const progressPct = showProgress ? Math.round((completedModules! / totalModules) * 100) : 0;
 
   const body = (
     <>
@@ -239,13 +279,25 @@ function CourseCard({ course, canEdit }: { course: Course; canEdit: boolean }) {
         <p className="course-card-description">
           {truncateText(course.description || '', 120)}
         </p>
+        {showProgress && (
+          <div className="course-card-progress">
+            <div className="course-card-progress-bar">
+              <div className="course-card-progress-fill" style={{ width: `${progressPct}%` }} />
+            </div>
+            <span className="course-card-progress-label">
+              {completedModules} of {totalModules} module{totalModules === 1 ? '' : 's'} complete
+            </span>
+          </div>
+        )}
         <div className="course-card-meta">
           <span>Author: {course.author || 'Unknown'}</span>
           <span className="course-card-category">{course.category || 'Uncategorised'}</span>
           <span>Updated: {formatDate(course.updatedAt)}</span>
-          <span>
-            {modules} module{modules === 1 ? '' : 's'}
-          </span>
+          {!showProgress && (
+            <span>
+              {totalModules} module{totalModules === 1 ? '' : 's'}
+            </span>
+          )}
         </div>
       </div>
     </>

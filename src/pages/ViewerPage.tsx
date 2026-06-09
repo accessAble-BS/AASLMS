@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { SlideRender } from '@/features/slides/SlideRender';
 import { useSlideStageFit } from '@/hooks/useSlideStageFit';
 import { fetchCourseForEmbed } from '@/lib/courses';
+import { markModuleComplete } from '@/lib/progress';
 import { getSortedSlides } from '@/lib/slides';
 import type { Slide } from '@/lib/types';
 
@@ -18,6 +19,8 @@ export function ViewerPage() {
   const [isComplete, setIsComplete] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [markingComplete, setMarkingComplete] = useState(false);
+  const [markedComplete, setMarkedComplete] = useState(false);
   const slideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,6 +38,14 @@ export function ViewerPage() {
   useEffect(() => {
     document.title = courseName;
   }, [courseName]);
+
+  async function handleMarkComplete() {
+    if (markedComplete || markingComplete) return;
+    setMarkingComplete(true);
+    await markModuleComplete(courseId, moduleId);
+    setMarkingComplete(false);
+    setMarkedComplete(true);
+  }
 
   async function loadViewer() {
     if (!courseId || !moduleId || !token) {
@@ -117,6 +128,18 @@ export function ViewerPage() {
             <div className="viewer-complete">
               <h2>Module complete</h2>
               <p>You have finished all slides in this module.</p>
+              {markedComplete ? (
+                <p className="viewer-complete-tick">Module complete ✓</p>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-primary viewer-complete-btn"
+                  disabled={markingComplete}
+                  onClick={() => void handleMarkComplete()}
+                >
+                  {markingComplete ? 'Saving…' : 'Mark as complete'}
+                </button>
+              )}
             </div>
           ) : (
             <SlideRender slide={slides[activeSlideIndex]} viewer interactive />

@@ -14,13 +14,19 @@ import {
 } from '@/lib/courses';
 import { buildImportedModules, parseModuleImport } from '@/lib/module-import';
 import { prepareCourseImage } from '@/lib/images';
+import { fetchCourseProgressSummary } from '@/lib/progress';
+import type { LearnerProgressRow } from '@/lib/progress';
+import { useRoles } from '@/hooks/useRoles';
 import type { Course } from '@/lib/types';
 
 export function CoursePage() {
   const { courseId = '' } = useParams();
   const navigate = useNavigate();
+  const { canEditLms } = useRoles();
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
+  const [progressRows, setProgressRows] = useState<LearnerProgressRow[]>([]);
+  const [progressLoading, setProgressLoading] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [addModuleOpen, setAddModuleOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -31,6 +37,19 @@ export function CoursePage() {
   useEffect(() => {
     void loadCourse();
   }, [courseId]);
+
+  useEffect(() => {
+    if (!canEditLms || !course) return;
+    void loadProgress(course);
+  }, [canEditLms, course?.id]);
+
+  async function loadProgress(c: Course) {
+    setProgressLoading(true);
+    const totalModules = Array.isArray(c.modules) ? c.modules.length : 0;
+    const { rows } = await fetchCourseProgressSummary(c.id, totalModules);
+    setProgressRows(rows);
+    setProgressLoading(false);
+  }
 
   async function loadCourse() {
     if (!courseId) {
@@ -247,6 +266,42 @@ export function CoursePage() {
           </ul>
         )}
       </section>
+
+      {canEditLms && (
+        <section className="module-section progress-section">
+          <div className="module-section-header">
+            <h2>Learner progress</h2>
+          </div>
+          {progressLoading ? (
+            <p className="empty-state">Loading progress…</p>
+          ) : progressRows.length === 0 ? (
+            <p className="empty-state">No completions yet.</p>
+          ) : (
+            <div className="progress-table-wrap">
+              <table className="progress-table">
+                <thead>
+                  <tr>
+                    <th>Learner</th>
+                    <th>Modules completed</th>
+                    <th>Last activity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {progressRows.map((row) => (
+                    <tr key={row.user_id}>
+                      <td>{row.email}</td>
+                      <td>
+                        {row.completed_modules} / {row.total_modules}
+                      </td>
+                      <td>{row.last_activity ? new Date(row.last_activity).toLocaleDateString() : '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      )}
 
       <Modal open={editOpen} title="Edit course" onClose={() => setEditOpen(false)}>
         <form onSubmit={(e) => void handleEditCourse(e)}>

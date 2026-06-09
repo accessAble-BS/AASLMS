@@ -1697,3 +1697,82 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Viewer: mark-as-complete ───────────────────────────────── */
+
+.viewer-complete-btn {
+  margin-top: 8px;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  padding: clamp(10px, 1.8vh, 14px) clamp(18px, 4vw, 28px);
+}
+
+.viewer-complete-tick {
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  color: var(--primary-100);
+  font-weight: 700;
+}
+
+/* ── CoursePage: learner progress table ─────────────────────── */
+
+.progress-section {
+  margin-top: 24px;
+}
+
+.progress-table-wrap {
+  overflow-x: auto;
+}
+
+.progress-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11pt;
+}
+
+.progress-table th,
+.progress-table td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--secondary-20);
+}
+
+.progress-table th {
+  font-weight: 700;
+  color: var(--secondary-80);
+  font-size: 10pt;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--secondary-20);
+}
+
+.progress-table tbody tr:hover {
+  background: var(--primary-20);
+}
+
+/* ── CataloguePage: progress bar on course cards ───────────── */
+
+.course-card-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.course-card-progress-bar {
+  height: 6px;
+  background: var(--secondary-20);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.course-card-progress-fill {
+  height: 100%;
+  background: var(--primary-100);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.course-card-progress-label {
+  font-size: 10pt;
+  color: var(--secondary-80);
+}
